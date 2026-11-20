@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ customer.name }} Ledger</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="dashboard-body">
+
+<div class="navbar">
+    <h2>🏪 Digital Ledger - Shop</h2>
+
+    <div class="nav-right">
+
+        <div style="margin:20px 0;">
+        <a href="{% url 'add_transaction' customer.id %}" class="nav-btn primary">
+            + Add Transaction
+        </a>
+
+            <a href="{% url 'customer_report' customer.id %}">
+            <button>Download Report</button>
+            </a>
+
+        <a href="{% url 'shop_dashboard' %}" class="nav-btn">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- Balance Card -->
+    <div class="summary-cards">
+
+        <div class="card card-blue">
+            <h4>Total You Gave</h4>
+            <h2>₹ {{ total_gave }}</h2>
+        </div>
+
+        <div class="card card-green">
+            <h4>Total You Got</h4>
+            <h2>₹ {{ total_got }}</h2>
+        </div>
+
+        <div class="card
+            {% if balance > 0 %}
+                card-green
+            {% elif balance < 0 %}
+                card-red
+            {% else %}
+                card-blue
+            {% endif %}
+        ">
+            <h4>Current Balance</h4>
+            <h2>₹ {{ balance }}</h2>
+        </div>
+
+    </div>
+
+    <h3>Notify Customer</h3>
+
+{% if wa_link %}
+<a href="{{ wa_link }}" target="_blank">
+<button>Notify via WhatsApp</button>
+</a>
+{% endif %}
+
+{% if mail_link %}
+<a href="{{ mail_link }}">
+<button>Notify via Email</button>
+</a>
+{% endif %}
+
+    <!-- Transaction Table -->
+    <div class="table-card">
+
+        <h3>Transaction History</h3>
+
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>You Gave</th>
+                <th>You Got</th>
+            </tr>
+
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.date }}</td>
+                <td>{{ t.description }}</td>
+
+                {% if t.transaction_type == 'gave' %}
+                    <td class="badge badge-red">₹ {{ t.amount }}</td>
+                    <td>-</td>
+                {% else %}
+                    <td>-</td>
+                    <td class="badge badge-green">₹ {{ t.amount }}</td>
+                {% endif %}
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty">
+                    No transactions yet
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

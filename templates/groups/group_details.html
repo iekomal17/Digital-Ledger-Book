@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ group.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<h2>Group: {{ group.name }}</h2>
+
+<h3>Members:</h3>
+<ul>
+    {% for member in group.members.all %}
+        <li>{{ member.name }}</li>
+    {% empty %}
+        <li>No members in this group</li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<h3>Notify Pending Members</h3>
+
+{% if member_links %}
+
+{% for m in member_links %}
+
+<p><b>{{ m.name }}</b></p>
+
+{% if m.wa %}
+<a href="{{ m.wa }}" target="_blank">
+<button>WhatsApp</button>
+</a>
+{% endif %}
+
+{% if m.mail %}
+<a href="{{ m.mail }}">
+<button>Email</button>
+</a>
+{% endif %}
+
+<br><br>
+
+{% endfor %}
+
+{% else %}
+
+<p style="color:green;font-weight:bold;">All members have paid ✔</p>
+
+{% endif %}
+
+<hr>
+
+<h3>Bills:</h3>
+
+{% regroup bills by bill_name as bill_list %}
+
+{% for bill_group in bill_list %}
+
+<h4>{{ bill_group.grouper }}</h4>
+
+<p><b>Paid By:</b> {{ bill_group.list.0.paid_by.name }}</p>
+
+<ul>
+    {% for bill in bill_group.list %}
+        <li>
+            {{ bill.member.name }} :
+            ₹{{ bill.split_amount }}
+
+            {% if bill.status == "pending" %}
+                <span style="color:red;font-weight:bold;">Pending</span>
+
+                <a href="{% url 'mark_received' bill.id %}">
+                    <button>Received</button>
+                </a>
+
+            {% else %}
+                <span style="color:green;font-weight:bold;">Paid</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+{% empty %}
+<p>No bills added yet</p>
+{% endfor %}
+
+<br>
+
+<a href="{% url 'split_bill' group.id %}">
+    <button>Split New Bill</button>
+</a>
+
+<br><br>
+
+<a href="{% url 'group_pdf' %}?group={{ group.id }}">
+    <button>Download Group Report</button>
+</a>
+
+<br><br>
+
+<a href="{% url 'group_list' %}">
+    <button>Back to Groups</button>
+</a>
+
+</body>
+</html>

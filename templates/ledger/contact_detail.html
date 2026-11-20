@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>{{ contact.name }}</h2>
+
+<p><b>Phone:</b> {{ contact.phone }}</p>
+<p><b>Email:</b> {{ contact.email }}</p>
+
+    <h3>Send Notification</h3>
+
+{% if wa_link %}
+<a href="{{ wa_link }}" target="_blank">
+<button>Notify via WhatsApp</button>
+</a>
+{% endif %}
+
+{% if mail_link %}
+<a href="{{ mail_link }}">
+<button>Notify via Email</button>
+</a>
+{% endif %}
+
+<h3>Transactions</h3>
+
+<table border="1">
+<tr>
+<th>Date</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Description</th>
+</tr>
+
+{% for t in transactions %}
+<tr>
+<td>{{ t.date }}</td>
+<td>{{ t.transaction_type }}</td>
+<td>₹{{ t.amount }}</td>
+<td>{{ t.description }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="4">No transactions found</td>
+</tr>
+{% endfor %}
+
+</table>
+
+    <br>
+
+<a href="{% url 'contact_report' contact.id %}">
+<button>Download Contact Report</button>
+</a>
+
+    <br>
+
+<a href="{% url 'ledger_dashboard' %}">
+    <button>Back to dashboard</button>
+</a>
+</body>
+</html>

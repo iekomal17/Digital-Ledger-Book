@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Contact</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <h2>💰 Digital Ledger</h2>
+    </div>
+    <div class="nav-right">
+        <a href="{% url 'ledger_dashboard' %}" class="nav-btn">← Back to Dashboard</a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="form-container">
+
+    <div class="form-card">
+        <h2>Add New Contact</h2>
+        <p class="form-subtitle">Store people you give or take money from.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Name:</label>
+                {{ form.name }}
+            </div>
+
+            <div class="input-group">
+                <label>Mobile No.</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="input-group">
+                <label>Mail:</label>
+                {{ form.email }}
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Save Contact
+            </button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

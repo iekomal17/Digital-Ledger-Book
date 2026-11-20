@@ -1,0 +1,45 @@
+<div style="text-align:center; margin-bottom:25px;">
+    <h1 style="margin:0; font-size:26px;">Digital Ledger System</h1>
+    <p style="margin:0; font-size:14px;">Lenden App</p>
+    <hr style="margin-top:10px;">
+</div>
+<h2>Shop Report</h2>
+
+<form method="GET">
+    <input type="text" name="customer" placeholder="Customer Name">
+
+    <input type="date" name="start">
+    <input type="date" name="end">
+
+    <button type="submit">View Report</button>
+</form>
+
+<hr>
+
+{% if transactions %}
+<table border="1">
+    <tr>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Type</th>
+    </tr>
+
+    {% for t in transactions %}
+    <tr>
+        <td>{{ t.customer.name }}</td>
+        <td>{{ t.date }}</td>
+        <td>{{ t.amount }}</td>
+        <td>{{ t.transaction_type }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<a href="{% url 'shop_pdf' %}?customer={{ request.GET.customer }}&start={{ request.GET.start }}&end={{ request.GET.end }}">
+    Download PDF
+</a>
+<a href="{% url 'shop_dashboard' %}">Back to Dashboard</a>
+
+{% endif %}

@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customers</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="dashboard-body">
+
+<div class="navbar">
+    <h2>🏪 Digital Ledger - Shop</h2>
+
+    <div class="nav-right">
+        <a href="{% url 'shop_dashboard' %}" class="nav-btn">← Dashboard</a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-container">
+
+    <div class="table-card">
+        <h3>Customer List</h3>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+
+            {% for c in customers %}
+            <tr>
+                <td>
+                    <a href="{% url 'customer_ledger' c.id %}" class="nav-btn">
+                    {{ c.name }}
+                    </a>
+                    <span class="type-badge {{ c.customer_type }}">
+                        ({{ c.customer_type|title }})
+                    </span>
+                </td>
+                <td>{{ c.phone }}</td>
+                <td>{{ c.address }}</td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="3" class="empty">No customers added yet</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Transaction</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <h2>💰 Digital Ledger</h2>
+    </div>
+    <div class="nav-right">
+        <a href="{% url 'home' %}" class="nav-btn">← Back</a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+<div class="form-container">
+
+    <div class="form-card">
+        <h2>➕ Add Transaction</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Contact -->
+            <div class="input-group">
+                <label>Contact</label>
+                {{ form.contact }}
+            </div>
+
+            <!-- Amount -->
+            <div class="input-group">
+                <label>Amount</label>
+                <div class="money-input">
+                    <span>₹</span>
+                    {{ form.amount }}
+                </div>
+            </div>
+
+            <!-- Type -->
+            <div class="input-group">
+                <label>Transaction Type</label>
+                {{ form.transaction_type }}
+            </div>
+
+            <!-- Date -->
+            <div class="input-group">
+                <label>Date</label>
+                {{ form.date }}
+            </div>
+
+            <!-- Description -->
+            <div class="input-group">
+                <label>Description</label>
+                {{ form.description }}
+            </div>
+
+            <button type="submit" class="primary-btn">Save Transaction</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

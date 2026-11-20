@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="hero-section text-white d-flex align-items-center">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            Smart Digital Ledger for Modern Businesses
+        </h1>
+        <p class="lead mb-4">
+            Track credits, debits, customers & transactions with ease.
+            <br>
+           • Secure • Fast • Professional
+        </p>
+
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">
+                Get Started
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+                Login
+            </a>
+        {% else %}
+            <a href="/" class="btn btn-primary btn-lg">
+                Go to Dashboard
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section class="container my-5">
+    <div class="row text-center">
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <i class="bi bi-cash-coin fs-1 text-success"></i>
+                <h4 class="mt-3">Track Transactions</h4>
+                <p class="text-muted">
+                    Record every give & take transaction securely and instantly.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <i class="bi bi-people fs-1 text-primary"></i>
+                <h4 class="mt-3">Manage Contacts</h4>
+                <p class="text-muted">
+                    Keep customer records organized and accessible anytime.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card-custom">
+                <i class="bi bi-bar-chart-line fs-1 text-warning"></i>
+                <h4 class="mt-3">Financial Summary</h4>
+                <p class="text-muted">
+                    View total credits, debits & net balance in real-time.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- CALL TO ACTION -->
+<section class="cta-section text-center text-white py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Start Managing Your Ledger Today</h2>
+        <p class="mb-4">Join Digital Ledger simplify your finances.</p>
+
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg">
+                Create Free Account
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

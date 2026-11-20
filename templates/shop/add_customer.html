@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Customer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="dashboard-body">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>🏪 Digital Ledger - Shop</h2>
+
+    <div class="nav-right">
+        <a href="{% url 'shop_dashboard' %}" class="nav-btn">← Dashboard</a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="form-container">
+
+    <div class="form-card">
+        <h2>➕ Add New Customer</h2>
+        <p class="form-subtitle">Create customer ledger account</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Name</label>
+                {{ form.name }}
+            </div>
+
+            <div class="input-group">
+                <label>Phone</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="input-group">
+                <label>Address</label>
+                {{ form.address }}
+            </div>
+            <div>
+                <label>Type</label>
+                {{ form.customer_type }}
+            </div>
+            <button type="submit" class="primary-btn">
+                Save Customer
+            </button>
+
+        </form>
+    </div>
+
+</div>
+<a href="{% url 'shop_dashboard' %}">Back to Dashboard</a>
+
+
+</body>
+</html>

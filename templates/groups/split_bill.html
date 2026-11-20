@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Split Bill</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+    <div class="table-card">
+
+        <h2>Split Bill - {{ group.name }}</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="nav-btn primary">
+                Split
+            </button>
+        </form>
+
+        <br>
+        <a href="{% url 'group_detail' group.id %}" class="nav-btn">
+            Back
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ledger Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="nav-left">
+        <h2>💰 Digital Ledger</h2>
+    </div>
+    <div class="nav-right">
+        <a href="{% url 'add_contact' %}" class="nav-btn">+ Add Contact</a>
+        <a href="{% url 'add_transaction' %}" class="nav-btn primary">+ Add Transaction</a>
+        <a href="/reports/ledger/report/" class="nav-btn primary">
+        Ledger Reports
+        </a>
+        <a href="{% url 'create_group' %}" class="nav-btn primary">
+            + Create Group
+        </a>
+
+        <a href="{% url 'group_list' %}" class="nav-btn">
+            My Groups
+        </a>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+        <a href="{% url 'profile' %}" class="nav-btn">
+            My Profile
+        </a>
+    </div>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-cards">
+
+        <div class="card card-green">
+            <h4>Total Spent</h4>
+            <h2>₹{{ total_given }}</h2>
+        </div>
+
+        <div class="card card-red">
+            <h4>Total Received</h4>
+            <h2>₹{{ total_taken }}</h2>
+        </div>
+
+        <div class="card card-blue">
+            <h4>Net Balance</h4>
+            <h2>₹{{ balance }}</h2>
+        </div>
+
+    </div>
+
+    <!-- CONTACT LIST -->
+    <div class="card-white">
+        <h3>Your Contacts</h3>
+        <form method="GET">
+        <input type="text" name="search" placeholder="Search contact..."
+           value="{{ request.GET.search }}">
+        <button type="submit">Search</button>
+        </form>
+        <ul class="contact-list">
+            {% for contact in contacts %}
+                <li>
+                    <a href="{% url 'contact_detail' contact.id %}">
+                    {{ contact.name }}
+                    </a>
+                </li>
+            {% empty %}
+                <li class="empty">No contacts added yet</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- TRANSACTION TABLE -->
+    <div class="table-card">
+        <h3>Recent Transactions</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Contact</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in recent_transactions %}
+                <tr>
+                    <td>{{ t.date }}</td>
+                    <td>{{ t.contact.name }}</td>
+                    <td>
+                        {% if t.transaction_type == 'give' %}
+                            <span class="badge badge-red">Gave</span>
+                        {% else %}
+                            <span class="badge badge-green">Got</span>
+                        {% endif %}
+                    </td>
+                    <td>₹{{ t.amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty">No transactions yet</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

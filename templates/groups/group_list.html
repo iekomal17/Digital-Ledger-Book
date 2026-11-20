@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Groups</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+    <div class="table-card">
+        <h2>My Groups</h2>
+
+        <table>
+            <tr>
+                <th>Group Name</th>
+                <th>Action</th>
+            </tr>
+
+            {% for group in groups %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td>
+                    <a href="{% url 'group_detail' group.id %}" class="nav-btn">
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">No groups created yet</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br>
+        <a href="{% url 'ledger_dashboard' %}" class="nav-btn">
+            Back
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

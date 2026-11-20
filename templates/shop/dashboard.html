@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shop Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="dashboard-body">
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <h2>🏪 Digital Ledger - Shop</h2>
+
+    <div class="nav-right">
+
+        <a href="{% url 'add_customer' %}" class="nav-btn primary">
+            + Add Customer
+        </a>
+
+        <a href="{% url 'view_customers' %}" class="nav-btn">
+            👥 View Customers
+        </a>
+        <a href="/reports/shop/report/" class="nav-btn primary">
+        Shop Reports
+        </a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+        <a href="{% url 'profile' %}" class="nav-btn">
+            My Profile
+        </a>
+
+    </div>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-cards">
+
+        <div class="card card-blue">
+            <h4>Total Customers</h4>
+            <h2>{{ total_customers }}</h2>
+        </div>
+
+        <div class="card card-green">
+            <h4>Money to Receive</h4>
+            <h2>₹ {{ total_receive }}</h2>
+        </div>
+
+        <div class="card card-red">
+            <h4>Money to Pay</h4>
+            <h2>₹ {{ total_pay }}</h2>
+        </div>
+
+        <div class="card
+            {% if net_balance > 0 %}
+                card-green
+            {% elif net_balance < 0 %}
+                card-red
+            {% else %}
+                card-blue
+            {% endif %}">
+            <h4>Net Balance</h4>
+        <h2>₹ {{ net_balance }}</h2>
+        </div>
+    </div>
+
+
+    <!-- CUSTOMER BALANCE TABLE -->
+    <div class="table-card">
+        <h3>Customer Ledger Summary</h3>
+        <form method="GET" style="margin-bottom:20px;">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search customer..."
+        value="{{ request.GET.search }}"
+        style="padding:6px; width:220px;"
+    >
+
+    <button type="submit">Search</button>
+</form>
+
+        <table>
+            <tr>
+                <th>Customer</th>
+                <th>Balance</th>
+                <th>Action</th>
+            </tr>
+
+            {% for item in customer_data %}
+            <tr>
+                <td>{{ item.customer.name }}</td>
+
+                <td>
+                    {% if item.balance > 0 %}
+                        <span class="badge badge-green">
+                            ₹ {{ item.balance }}
+                        </span>
+                    {% elif item.balance < 0 %}
+                        <span class="badge badge-red">
+                            ₹ {{ item.abs_balance }}
+                        </span>
+                        ₹ 0
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'customer_ledger' item.customer.id %}" class="nav-btn">
+                        View Ledger
+                    </a>
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="3" class="empty">No customers added yet</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

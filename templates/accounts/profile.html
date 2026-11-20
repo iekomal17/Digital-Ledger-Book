@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+    <div class="table-card profile-card">
+
+        <h2>My Profile</h2>
+
+        <!-- Profile Picture Preview -->
+        {% if request.user.profile_picture %}
+        <div class="profile-pic-container">
+                <img src="{{ request.user.profile_picture.url }}"
+                class="profile-pic-preview">
+            </div>
+            {% else %}
+                <img src="{% static 'images/default.png' %}"
+                     class="profile-pic-preview">
+            {% endif %}
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="nav-btn primary">
+                Update Profile
+            </button>
+        </form>
+
+        <p>
+            <strong>Subscription Status:</strong>
+            {% if request.user.subscription_active %}
+                <span style="color: green;">Active</span>
+            {% else %}
+                <span style="color: red;">Inactive</span>
+            {% endif %}
+        </p>
+
+        <p>
+            <strong>Valid Till:</strong>
+            {{ request.user.subscription_end }}
+        </p>
+
+        <br>
+
+        <a href="{% url 'password_change' %}" class="nav-btn">
+            Change Password
+        </a>
+
+        <br><br>
+
+        {% if request.user.role == "individual" %}
+            <a href="{% url 'ledger_dashboard' %}" class="nav-btn">
+                Back
+            </a>
+        {% elif request.user.role == "shop" %}
+            <a href="{% url 'shop_dashboard' %}" class="nav-btn">
+                Back
+            </a>
+{       {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

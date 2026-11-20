@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Group</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+    <div class="table-card">
+        <h2>Create Group</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="nav-btn primary">
+                Create Group
+            </button>
+        </form>
+
+        <br>
+        <a href="{% url 'ledger_dashboard' %}" class="nav-btn">
+            Back
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
